@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+    It is cool
+{% endblock head_title %}
+
+{% block content %}
+
+<div class="container">
+<h1 class="text-center">The Tweet Title</h1>
+<div id="loading" class="row"></div>
+</div>
+
+<script>
+  const loading = document.getElementById("loading");
+  const xhr = new XMLHttpRequest();
+  const method = "GET";
+  const url = "/tweets";
+  const responseType = "json";
+  function formatTweets(tweet){
+
+      let formatted = `<div class='col-md-8 col-lg-10 col-sm-12 border mx-auto'>
+        <p class="lead text-danger">
+        <span>
+        ${tweet.id}
+        </span>
+        - ${tweet.content}
+        </p>
+         <p>
+         <button class='btn btn-primary btn-sm'>234 Likes</button>
+         </p>
+        </div>`
+      return formatted;
+  }
+
+  xhr.responseType = responseType;
+  xhr.open(method, url);
+  xhr.onload = function () {
+    const responseData = xhr.response;
+    let listed_items = responseData.response;
+    console.log(listed_items);
+      for(let item of listed_items){
+        loading.innerHTML += formatTweets(item) ;
+    }
+  };
+  xhr.send();
+</script>
+{% endblock content %}
